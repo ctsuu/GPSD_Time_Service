@@ -8,3 +8,5 @@ GPSD Time Service with Garmin GPS19x
 ~https://gpsd.gitlab.io/gpsd/gpsd-time-service-howto.html
 
 ~https://medium.com/tech-guides/run-a-script-on-ubuntu-18-at-startup-7d8b650728e5
+
+~https://mythopoeic.org/pi-ntp/
