@@ -52,6 +52,21 @@ sudo systemctl is-active gpsd
 sudo systemctl is-active chronyd
 ~~~
 
+Use the following client to check the gps status:
+~~~
+cgps -s
+~~~
+PPS is live. Time offset is calculated around 1.05 secound. 
+~~~
+gpsmon -n
+~~~
+
+## Make a change to the chrony configuration file:
+If you are connected to the network, you will see a list of available time servers plus the GPS source which will be shown as NMEA. If you’re not network connected, you will just see the NMEA source listed. The two punctuation characters immediately before NMEA, indicate its status and you need to see #* where # means thge GPS is recognised as a local clock and * means that it’s being used to synchronise the Pi system time.
+~~~
+sudo nano /etc/chrony/chrony.conf
+~~~
+
 
 ## Reference
 ~https://photobyte.org/raspberry-pi-stretch-gps-dongle-as-a-time-source-with-chrony-timedatectl/
