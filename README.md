@@ -17,6 +17,13 @@ The NTP service is designed to solve the Latency, Jitter, Wobble and Accuracy pr
 ## Install GPSD, NTP, Chronyd
 
 In order to make high-quality time available for the sub-systems on my network, I am going to use GPS receiver as the reference clocks to build the system. GPSD use the 1 PPS pulse delivered by Garmin GPS 19x receiver to discipline (correct) a local NTP instance. The concept is just by timestamping the arrival of the first character in the first character in the report on each fix and correcting for a relatively small fix latency composed of fix-processing and RS232 transmission time. I use the Rs-232 control line (the Carrier Detect) to ship the 1PPS edge of second to the host system. Satellite top-of-second loses some accuracy on the way down due mainly to variable delays in the ionosphere; processing overhead in the GPS receiver itself adds a bit more latency, and the local host detecting that pulse adds more latency and jitter. But it's still often accurate to on the order of 1uSec. . 
+~~~
+$ ls -l /dev/ttyU*
+crw-rw---- 1 root dialout 188, 0 Jun 12 13:28 /dev/ttyUSB0
+$ sudo usermod -a -G dialout [user]
+$ sudo chmod 666 /dev/ttyUSB0
+to add 'rw_' for all users.
+~~~
 
 ## Install GPSD, NTP, Chronyd
 Now, install the following packages for GPS daemon and ntp or alternative ntp server:
@@ -66,6 +73,25 @@ If you are connected to the network, you will see a list of available time serve
 ~~~
 sudo nano /etc/chrony/chrony.conf
 ~~~
+
+Add the following lines at the end of the file
+~~~
+allow
+
+refclock SHM 0 refid GPS precision 1e-2 offset 0.9999 delay 0.2
+refclock SOCK /run/chrony.ttyUBS0.sock refid PPS precision 1e-3 offset 0.9999
+~~~
+If you start the system without network connection, the chrony will poll the GPS time in few minutes as soon as GPS get a good 3D fix. The time offset will show around 1 second with 30uSec variances. 
+
+If your network is back, the time offset may slowly move to the true time. 
+
+If you lost the GPS fix, the system time will keep going on it is own. 
+
+If you lost the internet, the system time will walk back slowly to the time offset around 1 second. 
+
+For best result, the system is better run without internet connection at all. 
+
+
 
 
 ## Reference
