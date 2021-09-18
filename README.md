@@ -32,11 +32,24 @@ In the file that opens, add or amend lines to make sure the following is present
 ~~~
 START_DAEMON=”true”
 
-USBAUTO=”true” # if you use Serial to UBS adapter
+# Automatically hot add/remove USB GPS devices via gpsdctl
+USBAUTO=”true” # if you use Serial to USB adapter
 
-DEVICES=”/dev/ttyACM0″
+#They need to be read/writeable, either by user gpsd or the group dialout
+#DEVICES=”/dev/ttyACM0″
+DEVICES=”/dev/ttyUSB0″ # Using Serial to UBS adapter
+GPS_BAUD=38400
 
-GPSD_OPTIONS=”-n”  # don't wait for client connects to poll GPS
+# don't wait for client connects to poll GPS
+GPSD_OPTIONS=”-n”  
+~~~
+Hit ctl-x followed by y to close and save the file.
+
+Reboot the system and check that the following services are active:
+~~~
+sudo systemctl is-active gpsd
+
+sudo systemctl is-active chronyd
 ~~~
 
 
