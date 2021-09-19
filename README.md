@@ -130,7 +130,20 @@ Now we can edit the gps_startup.sh script.
 ```
 sudo nano /home/rp4/gps_startup.sh
 ```
+Add the following lines into the file. 
+```
+sudo su-
+killall -9 gpsd chronyd
+chronyd -f /etc/chrony/chrony.conf
+sleep 2
 
+gpsd -n /dev/ttyUBS0
+sleep 2
+
+exit
+```
+
+Reboot the system, wait 5 minutes to see the effect. 
 
 ## Reference
 ~https://photobyte.org/raspberry-pi-stretch-gps-dongle-as-a-time-source-with-chrony-timedatectl/
