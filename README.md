@@ -91,6 +91,16 @@ If you lost the internet, the system time will walk back slowly to the time offs
 
 For best result, the system is better run without internet connection at all. 
 
+Check the NTP status:
+~~~
+sudo chronyc sources -v
+
+sudo chronyc tracking
+
+sudo chronyc makestep
+
+sudo timedatectl
+~~~
 
 
 
