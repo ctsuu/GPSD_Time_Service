@@ -102,6 +102,34 @@ sudo chronyc makestep
 sudo timedatectl
 ~~~
 
+## Create GPS_startup script
+
+Goto the the folder /etc/systemd/system, create a new file with gps.service, copy & paste the following line into the file. 
+~~~
+[Unit]
+Description=My custom startup script
+
+[Service]
+ExecStart=/home/rp4/gps_startup.sh start
+
+[Install]
+WantedBy=multi-user.target
+~~~
+Hit ctl-x followed by y to close and save the file.
+
+Then, add the service at start-up:
+~~~
+sudo systemctl enable gps.service
+~~~
+Start or Stop the gps.service as needed. 
+~~~
+sudo systemctl start gps.service
+sudo systemctl stop gps.service
+~~~
+Now we can edit the gps_startup.sh script. 
+```
+sudo nano /home/rp4/gps_startup.sh
+```
 
 
 ## Reference
