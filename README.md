@@ -126,6 +126,8 @@ Start or Stop the gps.service as needed.
 sudo systemctl start gps.service
 sudo systemctl stop gps.service
 ~~~
+
+## Start the GPS time server from booting the computer
 Now we can edit the gps_startup.sh script. 
 ```
 sudo nano /home/rp4/gps_startup.sh
@@ -139,11 +141,21 @@ sleep 2
 
 gpsd -n /dev/ttyUBS0
 sleep 2
-
-exit
 ```
 
-Reboot the system, wait 5 minutes to see the effect. 
+Reboot the system, wait 5 minutes to see the effect. Once the GPS device get 3D fix, the system clock will be synchronized to the gps time.
+```
+Sudo timedatectl
+```
+
+## Performance tuning
+At this point, the chrony time offset 0.9999 is a place holder. let chronyd run for at least 4 hours and observe the offset reported in the chronyc sourcestats output. 
+~~~
+Sudo chronyc sourcestats
+~~~
+
+In this case (Garmin 19x) the offset specified in the config for the GPS source should be around 0.083 Second.
+
 
 ## Reference
 ~https://photobyte.org/raspberry-pi-stretch-gps-dongle-as-a-time-source-with-chrony-timedatectl/
