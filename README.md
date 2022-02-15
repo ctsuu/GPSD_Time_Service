@@ -21,8 +21,14 @@ In order to make high-quality time available for the sub-systems on my network, 
 $ ls -l /dev/ttyU*
 crw-rw---- 1 root dialout 188, 0 Jun 12 13:28 /dev/ttyUSB0
 $ sudo usermod -a -G dialout [user]
-$ sudo chmod 666 /dev/ttyUSB0
+$ sudo chmod 777 /dev/ttyUSB0
 to add 'rw_' for all users.
+
+~~~
+To check serial port signal, 
+~~~
+sudo stty -F /dev/ttyUSB0 38400 
+sudo cat /dev/ttyUSB0
 ~~~
 
 ## Install GPSD, NTP, Chronyd
@@ -165,3 +171,7 @@ In this case (Garmin 19x) the offset specified in the config for the GPS source 
 ~https://medium.com/tech-guides/run-a-script-on-ubuntu-18-at-startup-7d8b650728e5
 
 ~https://mythopoeic.org/pi-ntp/
+
+https://weberblog.net/ntp-server-via-gps-on-a-raspberry-pi/
+
+
