@@ -45,7 +45,7 @@ sudo cat /dev/ttyUSB0
 Now, install the following packages for GPS daemon and ntp or alternative ntp server:
 ~~~
 sudo apt-get update
-sudo apt-get -y install gpsd gpsd-clients chrony
+sudo apt-get -y install pps-tools gpsd gpsd-clients chrony
 ~~~
 ## Config the gps daemon
 ~~~
