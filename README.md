@@ -14,6 +14,16 @@ This project is to using GPSD, NTP and Garmin GPS 19x HVS to setup a high-qualit
 
 The NTP service is designed to solve the Latency, Jitter, Wobble and Accuracy problems for the time services. Latency is delay from a time measurement until a report on it arrivs where it is needed. Jitter is short-term variation in latency. Wobble is a jitter-like variation that is long compareed to typical measurement periods. Accuracy is the traceable offset from 'true' time as defined by a national standard institute.
 
+## Connect the GPS to the Raspberry 4 Board
+
+Pin connections:
+
+    GPS PPS to RPi pin 12 (GPIO 18)
+    GPS VIN to RPi pin 2 or 4
+    GPS GND to RPi pin 6
+    GPS RX to RPi pin 8
+    GPS TX to RPi pin 10
+
 ## Install GPSD, NTP, Chronyd
 
 In order to make high-quality time available for the sub-systems on my network, I am going to use GPS receiver as the reference clocks to build the system. GPSD use the 1 PPS pulse delivered by Garmin GPS 19x receiver to discipline (correct) a local NTP instance. The concept is just by timestamping the arrival of the first character in the first character in the report on each fix and correcting for a relatively small fix latency composed of fix-processing and RS232 transmission time. I use the Rs-232 control line (the Carrier Detect) to ship the 1PPS edge of second to the host system. Satellite top-of-second loses some accuracy on the way down due mainly to variable delays in the ionosphere; processing overhead in the GPS receiver itself adds a bit more latency, and the local host detecting that pulse adds more latency and jitter. But it's still often accurate to on the order of 1uSec. . 
@@ -174,4 +184,5 @@ In this case (Garmin 19x) the offset specified in the config for the GPS source 
 
 https://weberblog.net/ntp-server-via-gps-on-a-raspberry-pi/
 
+https://austinsnerdythings.com/2021/04/19/microsecond-accurate-ntp-with-a-raspberry-pi-and-pps-gps/
 
