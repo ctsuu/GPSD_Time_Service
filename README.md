@@ -66,7 +66,16 @@ GPS_BAUD=38400
 # don't wait for client connects to poll GPS
 GPSD_OPTIONS=”-n”  
 ~~~
-Hit ctl-x followed by y to close and save the file.
+Hit ctl-x followed by y to close and save the file. This setup is working with Intel PC. 
+
+For Raspberry Pi 4, we have to change to:
+~~~
+START_DAEMON=”true”
+GPSD_OPTIONS=”/dev/ttyUSB0” 
+DEVICES=""
+USBAUTO="true"
+GPSD_SOCKET="/var/run/gpsd.sock"
+~~~
 
 Reboot the system and check that the following services are active:
 ~~~
@@ -95,7 +104,7 @@ Add the following lines at the end of the file
 allow
 
 refclock SHM 0 refid GPS precision 1e-2 offset 0.9999 delay 0.2
-refclock SOCK /run/chrony.ttyUBS0.sock refid PPS precision 1e-3 offset 0.9999
+refclock SOCK /run/chrony.ttyUSB0.sock refid PPS precision 1e-3 offset 0.9999
 ~~~
 If you start the system without network connection, the chrony will poll the GPS time in few minutes as soon as GPS get a good 3D fix. The time offset will show around 1 second with 30uSec variances. 
 
@@ -123,15 +132,22 @@ sudo timedatectl
 Goto the the folder /etc/systemd/system, create a new file with gps.service, copy & paste the following line into the file. 
 ~~~
 [Unit]
-Description=My custom startup script
+Description=My GPS startup script
+Requires= gpsd.socket
+#After=chronyd.service
 
 [Service]
-ExecStart=/home/rp4/gps_startup.sh start
+EnvironmentFile=-/etc/default/gpsd
+EnvironmentFile=-/etc/sysconfig/gpsd
+ExecStart=/home/pi/gps_startup.sh start
 
 [Install]
 WantedBy=multi-user.target
+Also=gpsd.socket
 ~~~
 Hit ctl-x followed by y to close and save the file.
+
+
 
 Then, add the service at start-up:
 ~~~
